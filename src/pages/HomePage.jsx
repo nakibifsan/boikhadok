@@ -157,7 +157,7 @@ export default function HomePage() {
                 style={{ minWidth: 140 }}
               >
                 Login
-                
+
               </motion.button>
               <motion.button
                 className="btn-outline"
