@@ -162,6 +162,7 @@ export default function ReaderPage() {
     setError('')
 
     const proxyBase = 'https://corsproxy.io/?url='
+    const apiUrl = effectiveGutenbergId ? `/api/gutenberg-text?bookId=${effectiveGutenbergId}` : ''
     if (!effectiveGutenbergId) {
       setError('This title does not have a readable Gutenberg text source.')
       setLoading(false)
@@ -173,14 +174,26 @@ export default function ReaderPage() {
     const fetchBook = async () => {
       let text = null
 
-      // Try direct first (Gutenberg does have CORS headers)
+      // Primary source: same-origin serverless endpoint on Vercel (avoids browser CORS issues)
       try {
-        const res = await fetch(directUrl)
+        const res = await fetch(apiUrl)
         if (res.ok) {
           text = await res.text()
         }
       } catch {
-        // Fall through to proxy
+        // Fall through to browser-side sources.
+      }
+
+      // Try direct first (Gutenberg does have CORS headers)
+      if (!text) {
+        try {
+          const res = await fetch(directUrl)
+          if (res.ok) {
+            text = await res.text()
+          }
+        } catch {
+          // Fall through to proxy
+        }
       }
 
       // Fallback: proxy
