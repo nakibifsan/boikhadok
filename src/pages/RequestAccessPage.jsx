@@ -135,7 +135,7 @@ export default function RequestAccessPage() {
                 marginBottom: 16,
               }}
             >
-              Peak Piracy
+              Golden Age of Piracy
             </h1>
             <p style={{ color: '#6B7280', fontSize: 15, lineHeight: 1.7, marginBottom: 40 }}>
               Fill this form with real info to get access of the website. You will get an email with your login credentials.
